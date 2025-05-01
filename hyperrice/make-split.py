@@ -16,7 +16,7 @@ unordered = Path("unordered")
 train     = Path("train")
 val       = Path("val")
 
-images    = os.listdir()
+images    = os.listdir(unordered)
 img_count = len(images)
 rng.shuffle(images)
 
