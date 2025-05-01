@@ -18,7 +18,6 @@ unordered_path = Path("hyperrice/unordered")
 if (not os.path.isdir("hyperrice/train")):
     os.makedirs("hyperrice/train")
     os.makedirs("hyperrice/val")
-    os.makedirs()
     # os.makedirs("hyperrice/testing")
 
 
