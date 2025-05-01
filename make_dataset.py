@@ -138,13 +138,14 @@ for i in range(len(df)):
     ## Our part
     ##
 
+    img = df.images[img_num].hsi_calibrated[:580]
     regions = np.max(renumbered_regions)
 
     # Over every region save it and the annotation
     for r in range(regions):
         # Create a new h5py for this bbox
         with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
-            res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r)
+            res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1)
             f.create_dataset("image", compression="lzf", data=res)
-            f.create_dataset("metadata", compression="lzf", data=df.images[img_num].metadata)
+            f.create_dataset("metadata", compression="lzf", data=df.images[img_num].metadata.to_dict())
             f.create_dataset("short_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
