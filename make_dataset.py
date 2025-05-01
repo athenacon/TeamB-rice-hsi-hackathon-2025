@@ -147,5 +147,8 @@ for i in range(len(df)):
         with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
             res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1)
             f.create_dataset("image", compression="lzf", data=res)
-            f.create_dataset("metadata", compression="lzf", data=df.images[img_num].metadata.to_dict())
             f.create_dataset("short_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
+            f.create_dataset("full_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
+            f.create_dataset("bundle_number", compression="lzf", data=df.images[img_num].metadata["Bundle Number"])
+            f.create_dataset("folder", compression="lzf", data=df.images[img_num].metadata["Folder"])
+            f.create_dataset("fname", compression="lzf", data=df.images[img_num].metadata["File Name"])
