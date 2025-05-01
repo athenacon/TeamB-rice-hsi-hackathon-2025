@@ -11,6 +11,12 @@ from skimage import filters, morphology, measure, color
 
 df = HSIDataSetDataFrame(pd.read_csv(DATA_DIR / "index.csv"))
 
+# -----------------------------------------------------------
+# 2.  Build a GLOBAL mapping  {species short-name → class ID}
+# -----------------------------------------------------------
+species_names = sorted(df["Species Short Name"].unique())
+species_to_id = {name: idx for idx, name in enumerate(species_names)}
+
 unordered_path = Path("hyperrice/unordered")
 
 
@@ -143,12 +149,19 @@ for i in range(len(df)):
 
     # Over every region save it and the annotation
     for r in range(regions):
+        short_name = df.images[i].metadata["Species Short Name"]
+        class_id   = species_to_id[short_name]
+        
         # Create a new h5py for this bbox
         with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
             res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1)
             f.create_dataset("image", compression="lzf", data=res)
-            f.create_dataset("short_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
-            f.create_dataset("full_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
-            f.create_dataset("bundle_number", compression="lzf", data=df.images[img_num].metadata["Bundle Number"])
-            f.create_dataset("folder", compression="lzf", data=df.images[img_num].metadata["Folder"])
-            f.create_dataset("fname", compression="lzf", data=df.images[img_num].metadata["File Name"])
+            f.create_dataset("short_name",      data=df.images[img_num].metadata["Species Short Name"])
+            f.create_dataset("full_name",       data=df.images[img_num].metadata["Species Full Name"])
+            f.create_dataset("bundle_number",   data=df.images[img_num].metadata["Bundle Number"])
+            f.create_dataset("folder",          data=df.images[img_num].metadata["Folder"])
+            f.create_dataset("fname",           data=df.images[img_num].metadata["File Name"])
+
+            f.create_dataset("class_id",        data=np.int32(class_id))
+
+print("All done!")
