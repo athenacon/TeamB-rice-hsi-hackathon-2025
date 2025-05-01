@@ -1,10 +1,10 @@
 scikit-learn
 scikit-image
 matplotlib
-spectral==0.24 
+spectral
 numpy
 pandas
-h5py==3.13.0
+h5py
 timm==1.0.15
 torch==2.7.0 --index-url https://download.pytorch.org/whl/cu118
 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cu118
