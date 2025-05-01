@@ -1,21 +1,30 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from helpers import *
-
+import os
+import h5py
 
 import numpy as np
-from scipy.ndimage import center_of_mass
+from scipy.ndimage import  center_of_mass
 from skimage import filters, morphology, measure, color
 
 
 df = HSIDataSetDataFrame(pd.read_csv(DATA_DIR / "index.csv"))
 
+unordered_path = Path("hyperrice/unordered")
+
 
 # Make a place for this data to go
-
+if (not os.path.isdir("hyperrice/train")):
+    os.makedirs("hyperrice/train")
+    os.makedirs("hyperrice/val")
+    os.makedirs()
+    # os.makedirs("hyperrice/testing")
 
 
 for i in range(len(df)):
+    print(f"Processing image {i}")
+    
     img_num = i
     threshold = 0.08
     min_area = 300
@@ -132,7 +141,10 @@ for i in range(len(df)):
     regions = np.max(renumbered_regions)
 
     # Over every region save it and the annotation
-    for r in range(regions)
-        res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r)
-        
-        
+    for r in range(regions):
+        # Create a new h5py for this bbox
+        with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
+            res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r)
+            f.create_dataset("image", compression="lzf", data=res)
+            f.create_dataset("metadata", compression="lzf", data=df.images[img_num].metadata)
+            f.create_dataset("short_name", compression="lzf", data=df.images[img_num].metadata["Species Short Name"])
