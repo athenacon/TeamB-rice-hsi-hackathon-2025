@@ -1,5 +1,5 @@
 from pathlib import Path
-from tqdm import tqdm
+import tqdm
 import numpy as np
 import shutil
 import tqdm
@@ -21,11 +21,11 @@ img_count = len(images)
 rng.shuffle(images)
 
 
-for i, image in enumerate(tqdm(images)):
+for i, image in enumerate(tqdm.tqdm(images)):
     # If it's in the range of validation then copy to validation
     if ((i / img_count) > SPLIT):
-        shutil.copyfile( val / image )
+        shutil.copyfile( unordered/image, val / image )
     else:
-        shutil.copyfile( train / image )
+        shutil.copyfile( unordered/image, train / image )
 
 
