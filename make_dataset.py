@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 from helpers import *
 import os
@@ -155,13 +154,14 @@ for i in range(len(df)):
         # Create a new h5py for this bbox
         with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
             res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1)
-            f.create_dataset("image", compression="lzf", data=res)
-            f.create_dataset("short_name",      data=df.images[img_num].metadata["Species Short Name"])
-            f.create_dataset("full_name",       data=df.images[img_num].metadata["Species Full Name"])
-            f.create_dataset("bundle_number",   data=df.images[img_num].metadata["Bundle Number"])
-            f.create_dataset("folder",          data=df.images[img_num].metadata["Folder"])
-            f.create_dataset("fname",           data=df.images[img_num].metadata["File Name"])
 
-            f.create_dataset("class_id",        data=np.int32(class_id))
+            dset = f.create_dataset("image", compression="lzf", data=res, dtype=res.dtype)
+            dset.attrs["short_name"]    = df.images[img_num].metadata["Species Short Name"]
+            dset.attrs["full_name"]     = df.images[img_num].metadata["Species Full Name"]
+            dset.attrs["bundle_number"] = df.images[img_num].metadata["Bundle Number"]
+            dset.attrs["folder"]        = df.images[img_num].metadata["Folder"]
+            dset.attrs["fname"]         = df.images[img_num].metadata["File Name"]
+
+            dset.attrs["class_id"]      = np.int32(class_id)
 
 print("All done!")
