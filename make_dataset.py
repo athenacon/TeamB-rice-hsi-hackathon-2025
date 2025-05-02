@@ -153,7 +153,8 @@ for i in range(len(df)):
         
         # Create a new h5py for this bbox
         with h5py.File(unordered_path / f"img_{i}_region_{r}.h5", "w") as f:
-            res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1)
+            # Convert to fp16 afterward to save on space
+            res = extract_bounded_seed(img, masks, renumbered_regions, region_id=r+1).astype(np.float16)
 
             dset = f.create_dataset("image", compression="lzf", data=res, dtype=res.dtype)
             dset.attrs["short_name"]    = df.images[img_num].metadata["Species Short Name"]
