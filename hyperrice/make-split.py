@@ -26,6 +26,7 @@ images    = os.listdir(unordered)
 # Sort for deterministic, it actualy makes it much faster on maxwell too? Might just be caching
 images    = sorted(images)
 img_count = len(images)
+# Make it random which images are in train and val
 rng.shuffle(images)
 
 
