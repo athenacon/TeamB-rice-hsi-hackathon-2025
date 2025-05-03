@@ -12,12 +12,12 @@ TRAIN_SPLIT=0.8
 rng = np.random.default_rng(seed=42)
 
 
-unordered = Path("unordered")
-train     = Path("train")
-val       = Path("val")
+unordered = Path("unordered/")
+train     = Path("train/")
+val       = Path("val/")
 
 if (train.exists() or val.exists()):
-    raise IOError(f"Train and val must be empty. Train exists {train.exists()}, val exists {val.exists()}")
+    raise IOError(f"Train and val must be empty. {train} exists {train.exists()}, {val} exists {val.exists()}")
 else:
     train.mkdir()
     val.mkdir()
