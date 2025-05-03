@@ -17,6 +17,8 @@ train     = Path("train")
 val       = Path("val")
 
 images    = os.listdir(unordered)
+# Sort for deterministic, it actualy makes it 250% faster on maxwell too?
+images    = sorted(images)
 img_count = len(images)
 rng.shuffle(images)
 
