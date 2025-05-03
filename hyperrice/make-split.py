@@ -16,6 +16,9 @@ unordered = Path("unordered")
 train     = Path("train")
 val       = Path("val")
 
+if (train.exists() or val.exists()):
+    raise IOError(f"Train and val must be empty. Train exists {train.exists()}, val exists {val.exists()}")
+
 images    = os.listdir(unordered)
 # Sort for deterministic, it actualy makes it 250% faster on maxwell too?
 images    = sorted(images)
