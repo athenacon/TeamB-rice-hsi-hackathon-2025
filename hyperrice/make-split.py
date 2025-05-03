@@ -23,7 +23,7 @@ else:
     val.mkdir()
 
 images    = os.listdir(unordered)
-# Sort for deterministic, it actualy makes it much faster on maxwell too?
+# Sort for deterministic, it actualy makes it much faster on maxwell too? Might just be caching
 images    = sorted(images)
 img_count = len(images)
 rng.shuffle(images)
