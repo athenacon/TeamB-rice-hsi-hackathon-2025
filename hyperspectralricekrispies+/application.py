@@ -63,8 +63,8 @@ class TrainingApplication():
 
         # How to transform the data
         self.augmentation_transforms = transforms.Compose([
-            transforms.RandomHorizontalFlip(p=0.5),               # Randomly flip 50% of the time
-            transforms.RandomRotation(degrees=45.0, expand=False) # Randomly rotate ±45° keeping the same dimensions
+            transforms.RandomHorizontalFlip(p=0.15),               # Randomly flip 50% of the time
+            transforms.RandomRotation(degrees=5.0, expand=False) # Randomly rotate ±45° keeping the same dimensions
         ])
 
         # Data loaders
@@ -166,7 +166,7 @@ class TrainingApplication():
             "--task_name", "-n",
             help="The name of the task (used in logging and saving checkpoints)",
             type=lambda n: n if (n.replace("_", "").isalnum()) else raise_(argparse.ArgumentTypeError(f"Task name '{n}' must be better")),
-            default="hyperkrispies")
+            default="hyperkrispies_lessaug")
 
         args.add_argument(
             "--dataset_path", "-d",
